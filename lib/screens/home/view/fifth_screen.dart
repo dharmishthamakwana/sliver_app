@@ -72,6 +72,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.pink.shade200,
             onPressed: () {
               setState(() {
                 score.clear();
