@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Get.toNamed('second');
                   },
                   icon: Icon(
-                  Icons.arrow_forward,size: 30,
+                    Icons.arrow_forward,
+                    size: 30,
                   ),
                 ),
               ],
