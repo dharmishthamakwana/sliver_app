@@ -10,12 +10,12 @@ void main() {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'forth',
+      initialRoute: 'third',
       routes: {
         '/': (p0) => HomeScreen(),
         'second': (p0) => SecondScreen(),
-        'third': (p0) => ThirdScreen(),
-        'third': (p0) => ThirdScreen(),
+        // 'third': (p0) => ThirdScreen(),
+        'third': (p0) => ForthScreen(),
         'forth': (p0) => Home(),
       },
     ),

@@ -1,9 +1,20 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
+//
+// class ItemModal {
+//   String? name, value;
+//   int? index;
+//   bool? accepting;
+//
+//   ItemModal({this.name, this.value, this.index, this.accepting = false});
+// }
+import 'dart:ui';
 
-class ItemModal{
-  String? name ,value;
-  IconData? icon;
-  bool? accepting;
+class Homemodel
+{
+  String? image,key;
+  Color? color;
+  int? index;
+  bool? ondrop;
 
-  ItemModal({this.name, this.value, this.icon, this.accepting = false});
+  Homemodel({this.image, this.key, this.index, this.ondrop,this.color});
 }

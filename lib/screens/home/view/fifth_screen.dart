@@ -36,14 +36,17 @@ class _HomeState extends State<Home> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: choice.keys.map(
-                (element) {
+                    (element) {
                   return Draggable<String>(
                     data: element,
                     child: Text(
                       element,
                       style: TextStyle(fontSize: 60),
                     ),
-                    feedback: Movable(element),
+                    feedback: Text(
+                      element,
+                      style: TextStyle(fontSize: 60,decoration: TextDecoration.none),
+                    ),
                     childWhenDragging: Text(
                       '🐰',
                       style: TextStyle(fontSize: 50),
@@ -72,7 +75,7 @@ class _HomeState extends State<Home> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.pink.shade200,
+            backgroundColor: Colors.pink.shade200,
             onPressed: () {
               setState(() {
                 score.clear();
@@ -106,7 +109,7 @@ class _HomeState extends State<Home> {
       onWillAccept: (data) => data == emoji,
       onAccept: (data) {
         setState(
-          () {
+              () {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Dropped successfully!',

@@ -1,9 +1,7 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
+import '../controller/home_controller.dart';
 import '../modal/itemmodal.dart';
 
 class ForthScreen extends StatefulWidget {
@@ -14,170 +12,110 @@ class ForthScreen extends StatefulWidget {
 }
 
 class _ForthScreenState extends State<ForthScreen> {
-  late List<ItemModal> items;
-  late List<ItemModal> items2;
-  late int score;
-  late bool gameOver;
-
-  @override
-  void initState() {
-    super.initState();
-    initGame();
-  }
-
-  var player = AudioCache();
-
-  initGame() {
-    gameOver = false;
-    score = 0;
-    items = [
-      ItemModal(icon: FontAwesomeIcons.coffee, name: "Coffee", value: "Coffee"),
-      ItemModal(icon: FontAwesomeIcons.dog, name: "Dog", value: "Dog"),
-      ItemModal(icon: FontAwesomeIcons.cat, name: "Cat", value: "Cat"),
-      ItemModal(
-          icon: FontAwesomeIcons.birthdayCake, name: "Cake", value: "Cake"),
-      ItemModal(icon: FontAwesomeIcons.bus, name: "Bus", value: "Bus"),
-    ];
-    items2 = List<ItemModal>.from(items);
-    items.shuffle();
-    items2.shuffle();
-  }
+  Homecontroller homecontroller = Get.put(Homecontroller());
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Column(
+        appBar: AppBar(
+            backgroundColor: Colors.pink.shade200, title: Text("Kids Game")),
+        body: Stack(
           children: [
-            Draggable(
-              child: Container(
-                height: 100,
-                width: 100,
-                child: Image(
-                  image: AssetImage(
-                    "assets/images/1.png",
-                  ),
-                ),
-              ),
-              feedback: Center(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      child: Image(
-                        image: AssetImage(
-                          "assets/images/1.png",
+            Obx(
+              () => Row(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        height: 650,
+                        width: 150,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Draggable(
+                                data: homecontroller.qalist[index].key,
+                                child: Container(
+                                  height: 80,
+                                  width: 100,
+                                  child: Text(
+                                    "${homecontroller.qalist[index].image}",
+                                    style: TextStyle(
+                                      fontSize: 70,
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                ),
+                                feedback: Container(
+                                  height: 120,
+                                  width: 120,
+                                  child: Text(
+                                    "${homecontroller.qalist[index].image}",
+                                    style: TextStyle(
+                                        fontSize: 80,
+                                        decoration: TextDecoration.none),
+                                  ),
+                                ),
+                                onDragCompleted: () {
+                                  print(homecontroller.qalist[index].image);
+                                  Container();
+
+                                  homecontroller.qalist[index].ondrop = true;
+                                },
+                              ),
+                            );
+                          },
+                          itemCount: homecontroller.qalist.length,
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                  Spacer(),
+                  Column(
+                    children: [
+                      Container(
+                        height: 650,
+                        width: 130,
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: DragTarget(
+                                builder:
+                                    (context, candidateData, rejectedData) {
+                                  return Container(
+                                    color: homecontroller.anlist[index].color,
+                                    alignment: Alignment.center,
+                                    height: 80,
+                                    width: 200,
+                                  );
+                                },
+                                onWillAccept: (data) {
+                                  return data ==
+                                      homecontroller.anlist[index].key;
+                                },
+                                onAccept: (data) {
+                                  homecontroller.anlist[index] = Homemodel(
+                                      image: homecontroller.qalist[index].image,
+                                      key: homecontroller.anlist[index].key,
+                                      ondrop: true);
+                                  // homecontroller.anlist.removeAt(
+                                  //     homecontroller.qalist[index].index!);
+                                },
+                              ),
+                            );
+                          },
+                          itemCount: homecontroller.anlist.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              childWhenDragging: Container(),
-              onDragStarted: () {
-                Get.snackbar('strat', 'start Draged');
-              },
-              data: 'red',
             ),
-            Spacer(),
-            DragTarget(
-              builder: (context, candidateData, rejectedData) {
-                return Container(
-                  height: 100,
-                  width: 100,
-                  color: Colors.blueGrey.shade300,
-                  child: Text(""),
-                );
-              },
-            ),
-
           ],
         ),
-        //     SingleChildScrollView(
-        //   child: Column(
-        //     children: [
-        //       Text.rich(
-        //         TextSpan(
-        //           children: [
-        //             TextSpan(text: "Score:"),
-        //             TextSpan(
-        //                 text: "$score",
-        //                 style: TextStyle(
-        //                     color: Colors.green,
-        //                     fontWeight: FontWeight.bold,
-        //                     fontSize: 30.0))
-        //           ],
-        //         ),
-        //       ),
-        //       if (gameOver)
-        //         Row(
-        //           children: <Widget>[
-        //             Column(
-        //               children: [
-        //                 items2.map((item) {
-        //                   return Container(
-        //                     margin: EdgeInsets.all(8.0),
-        //                     child: Draggable<ItemModal>(
-        //                       data: item,
-        //                       childWhenDragging: Icon(
-        //                         item.icon,
-        //                         color: Colors.grey,
-        //                         size: 50,
-        //                       ),
-        //                       feedback:
-        //                           Icon(item.icon, color: Colors.teal, size: 50),
-        //                       child:
-        //                           Icon(item.icon, color: Colors.teal, size: 50),
-        //                     ),
-        //                   );
-        //                 }).toList(),
-        //               ],
-        //             ),
-        //             Spacer(),
-        //             Column(
-        //               children: [
-        //                 item.map(
-        //                   (item) {
-        //                     return DragTarget(
-        //                       builder: (context, candidateData, rejectedData) {
-        //                         return Container();
-        //                       },
-        //                       onAccept: (recivedItems) {
-        //                         if (item.value == recivedItems!.value) {
-        //                           setState(() {
-        //                             items.remove(recivedItems);
-        //                             items2.remove(item);
-        //                             score += 10;
-        //                             item.accepting = false;
-        //                           });
-        //                         } else {
-        //                           setState(() {
-        //                             score -= 5;
-        //                             item.accepting = false;
-        //                           });
-        //                         }
-        //                       },
-        //                       onLeave: (receviedItems) {
-        //                         setState(() {
-        //                           item.accepting = false;
-        //                         });
-        //                       },
-        //                       onWillAccept: (receviedItems) {
-        //                         setState(() {
-        //                           item.accepting = true;
-        //                         });
-        //                       },
-        //                     );
-        //                   },
-        //                 ),
-        //               ],
-        //             ),
-        //           ],
-        //         )
-        //     ],
-        //   ),
-        // ),
       ),
     );
   }
