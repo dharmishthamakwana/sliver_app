@@ -7,12 +7,14 @@ import 'package:sliver_app/screens/home/view/sliver_screen2.dart';
 import 'package:sliver_app/screens/home/view/sliver_Screen3.dart';
 
 import 'screens/home/view/DataTable.dart';
+import 'screens/home/view/anim/view/animation_Screen.dart';
+import 'screens/home/view/anim/view/animation_Screen2.dart';
 
 void main() {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: 'sixth',
+      initialRoute: 'anim',
       routes: {
         '/': (p0) => HomeScreen(),
         'second': (p0) => SecondScreen(),
@@ -20,6 +22,8 @@ void main() {
         'Forth': (p0) => ForthScreen(),
         'Fifth': (p0) => Home(),
         'sixth':(p0) =>DataScreen(),
+        'anim':(p0) => AnimScreen(),
+        'Anim':(p0) => MyCustomWidget()
       },
     ),
   );
